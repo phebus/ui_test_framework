@@ -1,0 +1,6 @@
+# Dev environment settings
+
+logins:
+  bob:
+    username: bob
+    password: bobs_password

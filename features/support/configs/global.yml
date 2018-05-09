@@ -1,0 +1,3 @@
+# Global settings
+browserstack:
+  api_base: https://www.browserstack.com/automate/

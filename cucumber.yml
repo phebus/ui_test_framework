@@ -1,0 +1,16 @@
+<% if ENV['BROWSER'] == 'ie' %>
+  <% tags="--tags ~@skipped --tags ~@skipped_ie" %>
+<% else %>
+  <% tags="--tags ~@skipped" %>
+<% end %>
+
+default: --backtrace <%= tags %> --no-source --format junit --out features/output --format html --out features/output/features.html --format json --out features/output/results.json --format pretty -r features
+matrix: <%= tags %> --backtrace --strict --no-source --format junit --out features/output/<%= ENV['FEAT'] %>/<%= ENV['BUILD_ID'] %> --format html --out features/output/<%= ENV['FEAT'] %>/<%= ENV['BUILD_ID'] %>/features.html --format pretty -r features
+regression: <%= tags %> --tags ~@test --backtrace --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
+jenkins: <%= tags %> --tags ~@flaky --tags ~@test --tags ~@local_only --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
+jenkins_debug: --backtrace <%= tags %> --tags ~@flaky --tags ~@test --tags ~@local_only --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
+parallel: <%= tags %> --tags ~@flaky --tags ~@test --tags ~@local_only --format junit --out features/output --format json --out features/output/<%= Time.now.strftime('%y%m%d%H%M%S%L') %>_<%= rand(10000-99999) %>.json --format progress
+skipped: --tags @skipped --strict --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features
+flaky: --tags @flaky --backtrace --strict --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
+json: <%= tags %> --no-source --format json
+html: <%= tags %> --no-source --format html

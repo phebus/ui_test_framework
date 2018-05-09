@@ -1,0 +1,36 @@
+version: '2'
+services:
+  hub:
+    image: selenium/hub
+    ports:
+      - "4444:4444"
+  firefox:
+    image: selenium/node-firefox
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    links:
+      - hub
+  chrome:
+    image: selenium/node-chrome
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    links:
+      - hub
+  ui_test_framework:
+    build: ./
+    environment:
+      - HUB_URL=http://hub:4444/wd/hub
+      - GRID=true
+      - NUM_PROCS=8
+      - BS
+      - BS_KEY
+      - BS_NAME
+      - BROWSER
+      - BROWSER_VERSION
+    command: rake parallel
+    depends_on:
+      - hub
+    volumes:
+      - ./features/output:/usr/src/app/features/output
