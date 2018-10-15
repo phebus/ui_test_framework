@@ -22,6 +22,7 @@ class Command
 
   def self.and_tag_cmd
     return nil if ENV['AND_TAGS'].to_s.empty?
+
     ENV['AND_TAGS'].split(',').map { |tag| "--tags #{tag} " }.join
   end
 

@@ -20,6 +20,7 @@ class FeatureFile < File
   def scenarios
     lines.map.with_index do |line, index|
       next unless line.start_with?('Scenario')
+
       name = line.split(':')[1].strip
       ScenarioEntry.new(path_line: "#{path}:#{(index + 1)}", name: name, feature: self, tags: @feature_tags)
     end.compact
