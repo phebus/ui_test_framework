@@ -1,7 +1,7 @@
 class GoogleHomePage < BasePage
   page_url 'http://google.com'
 
-  text_field :search_box, id: 'lst-ib'
+  text_field :search_box, name: 'q'
 
   button :search_button, name: 'btnK'
 

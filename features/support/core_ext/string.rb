@@ -9,6 +9,7 @@ class String
   #
   def multi_gsub(substitutions)
     return self if empty? || substitutions.nil? # as a class method, this cannot be nil.
+
     string = dup # not a ! method.
     substitutions.inject(string) do |st, substitution|
       st.gsub(*substitution) # inject makes this act like gsub! without the nil failure

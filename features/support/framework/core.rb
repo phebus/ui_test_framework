@@ -62,6 +62,7 @@ module Framework
       until Time.now > end_time
         result = yield(self)
         return result if result
+
         sleep 0.5
       end
       fail Timeout::Error, "Timeout occurred after #{timeout} seconds #{message}"
@@ -107,6 +108,7 @@ module Framework
       wait_until(30, "waiting for a downloaded file to exist in '#{search_dir}'") do
         file_names = Dir.glob(File.join(search_dir, '*'))
         next if file_names.empty?
+
         # sort and get the last file created
         # (unless it ends with .part as this is how firefox downloads partial files).
         file_names.sort! { |f1, f2| File.mtime(f1) <=> File.mtime(f2) }

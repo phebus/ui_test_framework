@@ -1,4 +1,4 @@
-require 'active_support/core_ext/hash/indifferent_access'
+require 'deep_struct'
 
 module Framework
   module Eval
@@ -53,7 +53,7 @@ module Framework
       else
         yaml_config = YAML.load_file(yaml_file)
       end
-      HashWithIndifferentAccess.new(yaml_config)
+      DeepStruct.from_data(yaml_config)
     end
   end
 end

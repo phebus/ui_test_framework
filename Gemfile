@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport'
-gem 'cucumber', '= 2.99'
+gem 'cucumber'
 gem 'deep_struct'
 gem 'mail'
 gem 'nokogiri'

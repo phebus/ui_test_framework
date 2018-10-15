@@ -30,6 +30,7 @@ class Mailer
       mail = Mail.find(what: what, count: count, keys: keys, delete_after_find: delete).last
 
       fail "Email may not have sent\n\nSearched by: #{keys}" if mail.nil?
+
       mail
     end
   end
@@ -43,12 +44,13 @@ class Mailer
     key = $1.delete('_').upcase
     key_value = args.shift
     options = args.first.nil? ? {} : args.first
+    retriable_settings = { tries: options.fetch(:tries, 100),
+                           max_elapsed_time: options.fetch(:max_elapsed_time, 300) }
 
     find_email(keys: [key, key_value],
                count: options.fetch(:count, 5),
                what: options.fetch(:what, :last),
-               tries: options.fetch(:tries, 100),
-               max_elapsed_time: options.fetch(:max_elapsed_time, 300))
+               retriable_settings: retriable_settings)
   end
 
   def respond_to_missing?(method_name, _include_private = false)

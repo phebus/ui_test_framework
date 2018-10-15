@@ -71,6 +71,7 @@ find your build'
 
     def verify_environment
       raise 'BS_NAME and BS_KEY need to be set in order to use Browserstack' unless !!BS_NAME && !!BS_KEY
+
       true
     end
   end
