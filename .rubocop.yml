@@ -18,11 +18,14 @@ Style/Documentation:
 
 Layout/IndentHeredoc:
   Enabled: false
-  EnforcedStyle: auto_detection
+  EnforcedStyle: unindent
 
 Layout/DotPosition:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#layoutdotposition
+
+Layout/AlignHash:
+  Enabled: false
 
 Style/DoubleNegation:
   Enabled: false
@@ -38,7 +41,7 @@ Style/FormatString:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
-  EnforcedStyle: when_needed
+  EnforcedStyle: always
   SupportedStyles:
     # `when_needed` will add the frozen string literal comment to files
     # only when the `TargetRubyVersion` is set to 2.3+.
