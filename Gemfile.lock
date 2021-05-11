@@ -52,7 +52,6 @@ GEM
     faker (2.15.1)
       i18n (>= 1.6, < 2)
     ffi (1.14.2)
-    gherkin (5.1.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -101,7 +100,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -144,13 +143,6 @@ GEM
     watir (6.17.0)
       regexp_parser (~> 1.2)
       selenium-webdriver (~> 3.6)
-    watir-scroll (0.4.0)
-      watir (>= 6.0)
-    yard (0.9.26)
-    yard-cucumber (2.2.3)
-      cucumber (>= 0.7.5)
-      gherkin (>= 2.2.9)
-      yard (>= 0.8.1)
     yml_reader (0.7)
     zeitwerk (2.4.2)
 
@@ -171,9 +163,6 @@ DEPENDENCIES
   rspec
   rubocop
   watir
-  watir-scroll
-  yard
-  yard-cucumber
 
 BUNDLED WITH
    2.2.3
