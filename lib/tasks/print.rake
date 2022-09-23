@@ -5,7 +5,7 @@ namespace :print do
     printf "%-50<tag>s %<scenarios>s\n", tag: 'Tag', scenarios: 'Number of Scenarios'
     printf "%-50<ruler1>s %<ruler2>s\n", ruler1: '---', ruler2: '-------------------'
     tags.sort.each do |tag|
-      printf "%-50<tag>s %<scenarios>s\n", tag: tag, scenarios: Reports.scenarios_with_tag(tag, Reports.all_feature_files).length
+      printf "%-50<tag>s %<scenarios>s\n", tag:, scenarios: Reports.scenarios_with_tag(tag, Reports.all_feature_files).length
     end
   end
 

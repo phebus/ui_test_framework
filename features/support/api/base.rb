@@ -3,7 +3,7 @@ require 'rest-client'
 module API
   class Base
     def initialize
-      @client = RestClient::Resource.new(headers: headers)
+      @client = RestClient::Resource.new(headers:)
     end
 
     private

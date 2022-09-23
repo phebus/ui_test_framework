@@ -3,7 +3,7 @@ module PageObject
     module Watir
       class PageObject
         def wait_until(timeout: 60, message: nil, &block)
-          @browser.wait_until(timeout: timeout, message: message, &block)
+          @browser.wait_until(timeout:, message:, &block)
         end
       end
     end

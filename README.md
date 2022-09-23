@@ -13,10 +13,12 @@ and page object pattern enforcer.
    any contribution to documenting or updating the framework for use 
    in other environments.
     
-   * OSX 10.11
+   * Ruby 3.1 - This latest update made some changes that are specific to Ruby
+3.1+
+   * OSX 12.6
    * [Homebrew](http://brew.sh/) - for installing the below
-       * chromedriver - for testing on chrome
-       * phantomjs - for testing headless
+       * chromedriver - for chrome
+       * geckodriver - for firefox testing
    * [RVM](https://rvm.io/) - for managing rubies (rbenv is fine too)
    * RubyMine - very useful for debugging but everyone has their favorite
                 IDE (or they hate IDEs)
@@ -29,18 +31,17 @@ and page object pattern enforcer.
     
 ## To run: ##
 
-#### 1. All Tests
-   `$ rake`
-
-#### 2. Tests with tags. These are ORed so all tests with any of these tags will run
+#### 1. Tests with tags. These are ORed so all tests with any of these tags will run
    `$ rake TAGS=@tag1,@tag2,@tag3`
 
-#### 3. Tests with all tags specified. These are ANDed so only tests with all tags listed will run
+#### 2. Tests with all tags specified. These are ANDed so only tests with all tags listed will run
    `$ rake AND_TAGS=@tag1,@tag2,@tag3`
    
-#### 4. Specific feature file
+#### 3. Specific feature file
    `$ rake FEATURE=<path to feature file>/feature_file.feature`
         
+#### 4. Specific scenario in a feature file
+   `$ rake FEATURE=<path to feature file>/feature_file.feature:<scenario line number>`
 #### 5. Other environment variable options 
 1. **BROWSER**=*browser name* 
     

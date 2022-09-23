@@ -11,7 +11,7 @@ class Mailer
                        port: EnvSettings.configs.api.email.port,
                        enable_ssl: EnvSettings.configs.api.email.enable_ssl,
                        user_name: username,
-                       password: password)
+                       password:)
     end
   end
 
@@ -27,7 +27,7 @@ class Mailer
     max_elapsed_time  = retriable_settings.fetch(:max_elapsed_time, 600)
 
     Retriable.retriable on: StandardError, tries: tries, max_elapsed_time: max_elapsed_time do
-      mail = Mail.find(what: what, count: count, keys: keys, delete_after_find: delete).last
+      mail = Mail.find(what:, count:, keys:, delete_after_find: delete).last
 
       fail "Email may not have sent\n\nSearched by: #{keys}" if mail.nil?
 
@@ -38,7 +38,7 @@ class Mailer
   private
 
   # NOTE: https://tools.ietf.org/html/rfc3501#section-6.4.4 Search keys
-  def method_missing(method, *args, &block)
+  def method_missing(method, *args, &)
     return super unless method.to_s =~ /^find_by_(.*)$/
 
     key = $1.delete('_').upcase
@@ -50,7 +50,7 @@ class Mailer
     find_email(keys: [key, key_value],
                count: options.fetch(:count, 5),
                what: options.fetch(:what, :last),
-               retriable_settings: retriable_settings)
+               retriable_settings:)
   end
 
   def respond_to_missing?(method_name, _include_private = false)
