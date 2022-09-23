@@ -46,14 +46,14 @@ class ScenarioEntry
   end
 
   def examples_end
-    feature.lines[examples_start..-1].each_with_index do |example, index|
+    feature.lines[examples_start..].each_with_index do |example, index|
       return index + examples_start - 1 unless example.start_with?('|')
-      return index + examples_start if index == feature.lines[examples_start..-1].size - 1
+      return index + examples_start if index == feature.lines[examples_start..].size - 1
     end
   end
 
   def examples_start
-    feature.lines[line..-1].each_with_index do |value, index|
+    feature.lines[line..].each_with_index do |value, index|
       return index + line + 2 if value.start_with?('Examples:')
     end
   end

@@ -1,7 +1,7 @@
 require 'report_builder'
-require 'feature_file'
-require 'scenario_entry'
-require 'command'
+require_relative 'feature_file'
+require_relative 'scenario_entry'
+require_relative 'command'
 
 class Reports
   # Print statistical information about our tests to STDOUT.
@@ -36,8 +36,8 @@ class Reports
 
     feature_files ||= all_feature_files
     ENV['TAGS'].split(',').each do |tag|
-      puts "\n\n" + 'MATCHING THE TAG ' + tag + ' ...'
-      scenarios_with_tag(tag, feature_files).each { |scenario| puts scenario.to_s + "\n" }
+      puts "\n\nMATCHING THE TAG #{tag} ..."
+      scenarios_with_tag(tag, feature_files).each { |scenario| puts "#{scenario}\n" }
     end
   end
 
@@ -47,7 +47,7 @@ class Reports
   #
   def self.scenarios_to_run(feature_files = nil)
     feature_files ||= all_feature_files
-    (all_scenarios(feature_files) - skipped_scenarios(feature_files)).each { |s| puts s.to_s + "\n" }
+    (all_scenarios(feature_files) - skipped_scenarios(feature_files)).each { |s| puts "#{s}\n" }
   end
 
   def self.skipped_scenarios(feature_files)
@@ -61,7 +61,7 @@ class Reports
   #
   def self.all_feature_files(directory = './features')
     sep = directory.end_with?('/') ? '' : '/'
-    files = Dir.glob(directory + sep + '**/*.feature')
+    files = Dir.glob("#{directory}#{sep}**/*.feature")
     files.map { |file| FeatureFile.new(file) }
   end
 

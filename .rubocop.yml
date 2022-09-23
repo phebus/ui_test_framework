@@ -1,35 +1,149 @@
 # Relaxed.Ruby.Style
-
-Style/Alias:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#stylealias
-
-Style/BeginBlock:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#stylebeginblock
-
-Style/BlockDelimiters:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#styleblockdelimiters
-
-Style/Documentation:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#styledocumentation
-
-Layout/IndentHeredoc:
-  Enabled: false
-  EnforcedStyle: unindent
+require: rubocop-rake
 
 Layout/DotPosition:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#layoutdotposition
 
-Layout/AlignHash:
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/HashAlignment:
   Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#stylespacebeforeblockbraces
+
+Layout/SpaceInsideParens:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#stylespaceinsideparens
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#lintambiguousregexpliteral
+
+Lint/AssignmentInCondition:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#lintassignmentincondition
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/FloatComparison:
+  Enabled: true
+
+Lint/MissingSuper:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/OutOfRangeRegexpRef:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/SelfAssignment:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+
+Lint/UnreachableLoop:
+  Enabled: true
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: true
+
+Metrics/ClassLength:
+  Enabled: true
+  Max: 200
+
+Metrics/ModuleLength:
+  Enabled: true
+
+Metrics/CyclomaticComplexity:
+  Enabled: true
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 20
+
+Metrics/ParameterLists:
+  Enabled: true
+
+Metrics/PerceivedComplexity:
+  Enabled: true
+
+Style/AccessorGrouping:
+  Enabled: true
+
+Style/Alias:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#stylealias
+
+Style/ArrayCoercion:
+  Enabled: true
+
+Style/BeginBlock:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#stylebeginblock
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/BlockDelimiters:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#styleblockdelimiters
+
+Style/CaseLikeIf:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#styledocumentation
 
 Style/DoubleNegation:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styledoublenegation
+
+Style/ExplicitBlockArgument:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
 
 Style/EndBlock:
   Enabled: false
@@ -51,6 +165,24 @@ Style/FrozenStringLiteralComment:
     # string literal. If you run code against multiple versions of Ruby, it is
     # possible that this will create errors in Ruby 2.3.0+.
     - always
+
+Style/GlobalStdStream:
+  Enabled: true
+
+Style/HashAsLastArrayItem:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashLikeCase:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
 
 Style/IfUnlessModifier:
   Enabled: false
@@ -76,6 +208,9 @@ Style/NegatedWhile:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylenegatedwhile
 
+Style/OptionalBooleanParameter:
+  Enabled: true
+
 Style/ParallelAssignment:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styleparallelassignment
@@ -88,6 +223,21 @@ Style/PerlBackrefs:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styleperlbackrefs
 
+Style/RedundantAssignment:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
 Style/Semicolon:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylesemicolon
@@ -95,6 +245,9 @@ Style/Semicolon:
 Style/SignalException:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylesignalexception
+
+Style/SingleArgumentDig:
+  Enabled: true
 
 Style/SingleLineBlockParams:
   Enabled: false
@@ -104,17 +257,15 @@ Style/SingleLineMethods:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylesinglelinemethods
 
-Layout/SpaceBeforeBlockBraces:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#stylespacebeforeblockbraces
-
-Layout/SpaceInsideParens:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#stylespaceinsideparens
+Style/SlicingWithRange:
+  Enabled: true
 
 Style/SpecialGlobalVars:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylespecialglobalvars
+
+Style/StringConcatenation:
+  Enabled: false
 
 Style/StringLiterals:
   Enabled: false
@@ -124,44 +275,7 @@ Style/WhileUntilModifier:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylewhileuntilmodifier
 
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#lintambiguousregexpliteral
-
-Lint/AssignmentInCondition:
-  Enabled: false
-  StyleGuide: http://relaxed.ruby.style/#lintassignmentincondition
-
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/BlockLength:
-  Enabled: false
-
-Metrics/BlockNesting:
-  Enabled: true
-
-Metrics/ClassLength:
-  Enabled: true
-
-Metrics/ModuleLength:
-  Enabled: true
-
-Metrics/CyclomaticComplexity:
-  Enabled: true
-
-Metrics/LineLength:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: true
-
-Metrics/ParameterLists:
-  Enabled: true
-
-Metrics/PerceivedComplexity:
-  Enabled: true
-
 AllCops:
   Exclude:
     - 'features/step_definitions/*'
+  NewCops: enable

@@ -7,7 +7,6 @@ class GoogleHomePage < BasePage
 
   def search(term)
     search_box_element.send_keys term
-    send_keys :escape
-    search_button
+    send_keys :enter
   end
 end

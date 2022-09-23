@@ -1,6 +1,3 @@
-require 'core_ext/hash'
-require 'deep_struct'
-
 class EnvSettings
   # Loads a config based on the SITE environment variable or the name of the file parameter.
   #
@@ -29,13 +26,13 @@ class EnvSettings
 
       product_config_files.map do |pcf|
         base_name = pcf.split('/').last.split('.yml').first
-        { base_name => Framework::Eval.read_config_file(pcf, true) }
+        { base_name => read_config_file(pcf, true) }
       end
     end
 
     def global
       global_file = File.dirname(__FILE__) + '/configs/global.yml'
-      Framework::Eval.read_config_file(global_file, false)
+      read_config_file(global_file, false)
     end
 
     def base_config(file = nil)
@@ -44,7 +41,18 @@ class EnvSettings
 
       raise "Unable to find YML file \"#{base_config_file}.yml" unless File.exist?(base_config_file)
 
-      Framework::Eval.read_config_file(base_config_file, true)
+      read_config_file(base_config_file, true)
+    end
+
+    def read_config_file(yaml_file, is_template)
+      if is_template
+        template    = File.read(yaml_file)
+        yaml_config = YAML.safe_load(ERB.new(template).result)
+      else
+        yaml_config = YAML.load_file(yaml_file)
+      end
+
+      DeepStruct.from_data(yaml_config)
     end
   end
 end
