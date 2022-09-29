@@ -23,7 +23,7 @@ class Hash
       result_hash = {}
       if node.attributes != {}
         result_hash[:attributes] = {}
-        node.attributes.keys.each do |key|
+        node.attributes.each_key do |key|
           result_hash[:attributes][node.attributes[key].name.to_sym] = prepare(node.attributes[key].value)
           result_hash[node.attributes[key].name.snake_case.to_sym] = prepare(node.attributes[key].value)
         end
@@ -52,7 +52,7 @@ class Hash
     end
 
     def prepare(data)
-      data.class == String && data.to_i.to_s == data ? data.to_i : data
+      data.instance_of?(String) && data.to_i.to_s == data ? data.to_i : data
     end
   end
 end

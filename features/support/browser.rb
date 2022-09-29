@@ -1,58 +1,42 @@
-require 'selenium-webdriver'
+require 'remote'
 
 module Browser
   def self.start(scenario, session_dir)
     @session_dir = session_dir
-    @profile = send("#{BROWSER}_caps")
+    @watir_opts  = send("#{BROWSER}_caps")
 
-    if Grid.on?
-      Browserstack.on? ? browserstack(scenario) : grid
+    if Remote.on?
+      remote(scenario)
     else
-      Watir::Browser.new BROWSER.to_sym, @profile
+      Watir::Browser.new BROWSER.to_sym, options: @watir_opts, headless: HEADLESS
     end
   end
 
-  def self.browserstack(scenario)
-    Watir::Browser.new :remote, url: Browserstack.hub_url, desired_capabilities: Browserstack.caps(scenario)
-  end
+  def self.remote(scenario)
+    tries ||= 3
 
-  def self.grid
-    Watir::Browser.new BROWSER.to_sym, url: Grid.hub_url
+    Watir::Browser.new BROWSER.to_sym, options: Remote.caps(scenario).merge!(@watir_opts),
+                       url:                     Remote.hub_url,
+                       http_client:             { read_timeout: 600, open_timeout: 600 }
+  rescue Selenium::WebDriver::Error::UnknownError, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
+    Kernel.puts 'Error starting browser, retrying: ' + e.inspect
+    retry unless (tries -= 1).zero?
   end
 
   def self.firefox_caps
-    profile = Selenium::WebDriver::Firefox::Profile.new
-    profile['browser.download.dir'] = @session_dir
-    profile['browser.download.folderList'] = 2
-    profile['browser.helperApps.neverAsk.saveToDisk'] = 'application/pdf,text/plain,application/octet-stream,application/vnd.ms-excel'
-    { profile: profile }
+    {}
   end
 
   def self.chrome_caps
-    caps = {
-      options:
-        {
-          prefs: chrome_prefs
-        },
-      headless: HEADLESS
-    }
-
-    caps[:options][:args] = ['--no-sandbox'] if HEADLESS
-    caps
-  end
-
-  def self.chrome_prefs
     {
-      download:
-        {
+      prefs: {
+        download: {
           prompt_for_download: false,
-          default_directory: @session_dir
+          default_directory:   @session_dir
         }
+      },
+      args:  %w[--no-sandbox --disable-dev-shm-usage]
     }
-  end
-
-  def self.safari_caps
-    {}
   end
 
   def self.edge_caps

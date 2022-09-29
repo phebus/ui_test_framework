@@ -1,16 +1,6 @@
-<% if ENV['BROWSER'] == 'ie' %>
-  <% tags="--tags 'not @skipped' --tags 'not @skipped_ie'" %>
-<% else %>
-  <% tags="--tags 'not @skipped'" %>
-<% end %>
+<% tags="--tags 'not @skipped'" %>
 
-default: --backtrace <%= tags %> --no-source --format junit --out features/output --format html --out features/output/features.html --format json --out features/output/results.json --format pretty -r features
-matrix: <%= tags %> --backtrace --strict --no-source --format junit --out features/output/<%= ENV['FEAT'] %>/<%= ENV['BUILD_ID'] %> --format html --out features/output/<%= ENV['FEAT'] %>/<%= ENV['BUILD_ID'] %>/features.html --format pretty -r features
-regression: <%= tags %> --tags 'not @test' --backtrace --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
-jenkins: <%= tags %> --tags 'not @flaky' --tags 'not @test' --tags 'not @local_only' --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
-jenkins_debug: --backtrace <%= tags %> --tags 'not @flaky' --tags 'not @test' --tags 'not @local_only' --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
-parallel: <%= tags %> --tags 'not @flaky' --tags 'not @test' --tags 'not @local_only' --format junit --out features/output --format json --out features/output/<%= Time.now.strftime('%y%m%d%H%M%S%L') %>_<%= rand(10000-99999) %>.json --format progress
-skipped: --tags @skipped --strict --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features
-flaky: --tags @flaky --backtrace --strict --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/results.json
-json: <%= tags %> --no-source --format json
-html: <%= tags %> --no-source --format html
+default: --publish-quiet --backtrace <%= tags %> --no-source --format junit --out features/output --format html --out features/output/features.html --format json --out features/output/results.json --format pretty -r features
+jenkins_debug: --publish-quiet --backtrace <%= tags %> --tags 'not @overnight' --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features --format json --out features/output/<%= Time.now.strftime('%y%m%d%H%M%S%L') %>_<%= rand(10000-99999) %>.json
+parallel: --publish-quiet <%= tags %> --format junit --out features/output --format json --out features/output/<%= Time.now.strftime('%y%m%d%H%M%S%L') %>_<%= rand(10000-99999) %>.json --format progress
+skipped: --publish-quiet --tags @skipped --strict --no-source --format junit --out features/output --format html --out features/output/features.html --format pretty -r features

@@ -1,3 +1,4 @@
+desc 'dump the ruby config'
 task :env do
   puts <<~ENV
 

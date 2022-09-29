@@ -1,25 +1,27 @@
-FROM ruby:alpine
-ENV AGENT_JAR_URI 'http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/3.14/remoting-3.14.jar'
+FROM ruby:latest
+ENV REMOTE_VER '4.14'
+ENV AGENT_JAR_URI "http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/$REMOTE_VER/remoting-$REMOTE_VER.jar"
+ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt update && apt upgrade -y
 
-RUN apk add --no-cache g++ make openjdk8 openjdk8-jre bash git python bash openssh-client gcc musl-dev libffi-dev libressl-dev python-dev wget py-pip\
-  && pip install pyopenssl \
-  && adduser -S -g "Jenkins user" -s bash -h /home/jenkins jenkins \
+RUN apt install -y g++ default-jdk default-jre build-essential make tzdata bash git bash \
+    openssh-client gcc musl-dev libffi-dev wget build-essential openssl libreadline6-dev curl git-core zlib1g zlib1g-dev \
+    libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev \
+    automake libtool bison software-properties-common \
+  && adduser --home /home/jenkins jenkins \
   && echo 'docker:x:107:jenkins' >> /etc/group \
   && mkdir -p /usr/share/jenkins \
   && chmod 755 /usr/share/jenkins \
   && wget -q -O /usr/share/jenkins/agent.jar $AGENT_JAR_URI \
-  && chmod 644 /usr/share/jenkins/agent.jar \
-  && mkdir -p /tmp/gcp_install && cd /tmp/gcp_install \
-  && wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz -O google-cloud-sdk.tar.gz \
-  && cd / \
-  && tar zxvf /tmp/gcp_install/google-cloud-sdk.tar.gz \
-  && /google-cloud-sdk/install.sh -q --additional-components kubectl --usage-reporting=true --path-update=true --command-completion=false
-#  && apk del gcc musl-dev libffi-dev openssl-dev python-dev py-pip
+  && chmod 644 /usr/share/jenkins/agent.jar
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/
+ENV TZ UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN for z in `ls /google-cloud-sdk/bin`; do ln -s /google-cloud-sdk/bin/$z /bin/$z; done
+ENV JAVA_HOME /usr/lib/jvm/default-java/
+
+# RUN for z in `ls /google-cloud-sdk/bin`; do ln -s /google-cloud-sdk/bin/$z /bin/$z; done
 
 ADD ./jenkins-agent /usr/local/bin/jenkins-agent
 
@@ -34,10 +36,6 @@ RUN gem install bundler
 RUN bundle install
 
 WORKDIR /home/jenkins
-USER jenkins
-
-# copy yard config file to the home dir so docs can be generated in the documentation job
-RUN mkdir /home/jenkins/.yard
-COPY .yardconfig /home/jenkins/.yard/config
+#USER jenkins
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]

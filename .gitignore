@@ -76,5 +76,7 @@ build/
 # specific to this project
 /features/output/*.*
 .idea/
+/output
 
-# Created by .ignore support plugin (hsz.mobi)
+# OS specific
+/.DS_Store
