@@ -13,7 +13,7 @@ class Zalenium
     end
 
     def hub_url
-      'http://zalenium-test-app.zalenium-test:80/wd/hub'
+      "http://#{HUB_ADDR}:#{HUB_PORT}/wd/hub"
     end
 
     def video_url(session_id)
@@ -24,7 +24,7 @@ class Zalenium
       file_name    = session_info['fileName']
       build        = session_info['build'].tr(' ', '_')
 
-      "https://zalenium.vitalbook.com/dashboard/#{build}/#{file_name}"
+      "https://#{HUB_ADDR}/dashboard/#{build}/#{file_name}"
     rescue NoMethodError
       retry unless (tries -= 1).zero?
     end

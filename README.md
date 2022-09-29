@@ -31,72 +31,113 @@ and page object pattern enforcer.
     
 ## To run: ##
 
-#### 1. Tests with tags. These are ORed so all tests with any of these tags will run
-   `$ rake TAGS=@tag1,@tag2,@tag3`
+#### Tests with tags. These are ORed so all tests with any of these tags will run
+`rake TAGS=@tag1,@tag2,@tag3`
 
-#### 2. Tests with all tags specified. These are ANDed so only tests with all tags listed will run
-   `$ rake AND_TAGS=@tag1,@tag2,@tag3`
-   
-#### 3. Specific feature file
-   `$ rake FEATURE=<path to feature file>/feature_file.feature`
-        
-#### 4. Specific scenario in a feature file
-   `$ rake FEATURE=<path to feature file>/feature_file.feature:<scenario line number>`
-#### 5. Other environment variable options 
-1. **BROWSER**=*browser name* 
-    
-    chrome, firefox, ie, opera, safari, phantomjs (provided they are 
-    installed or available on Browserstack or like service)
-    
-    Default is chrome
-    
-2. **SITE**=*environment to run against*
+#### Tests with all tags specified. These are ANDed so only tests with all tags listed will run
+`rake AND_TAGS=@tag1,@tag2,@tag3`
 
-    Right now 'dev' and 'staging' are the only environments to run in.
-    These are controlled by the yaml files in features/support/configs.
-    This will load the global.yml and merge it with the named env.
-    These parameters are made available through EnvSettings.configs,
-    a DeepStruct of the environment config file.
-    Used for describing predefined environment conditions (users,
-    assets, etc.)
-    
-3. **BS**=*true* **GRID**=*true*
+#### Specific feature file
+`rake FEATURE=<path to feature file>/feature_file.feature`
 
-    Tests will run on Browserstack. Requires **BS_NAME** and **BS_KEY** to 
-    also be set to your user name and api key for Browserstack.
-    Also, **OS**, **OS_VERSION**, **DEVICE**, **BUILD_NAME**, **PROJECT_NAME**, 
-    and **BROWSER_VERSION** are only applicable when running on Browserstack. 
-    See [Browserstack Capabilities](https://www.browserstack.com/automate/capabilities) for acceptable values.
-    Also see [Browserstack Browsers and Platforms](https://www.browserstack.com/list-of-browsers-and-platforms?product=automate) for list of browsers, platforms, 
-    and devices offered. It can be run on mobile emulators by sending **BROWSER**=*ipad* | *iphone* | *android* and
-    **DEVICE**=*something from the list of devices on the above page* (if not included Browserstack will choose for 
-    you.
-    
-    
-#### 5. Docker
+#### Specific scenario in feature file
+`rake FEATURE=<path to feature file>/feature_file.feature:<line number of scenario>`
 
-You can build and run these tests in a Docker container. By itself this doesn't achieve much except the ability to run 
-tests without having to worry about prerequisites on your machine (other than Docker of course). This was added 
-primarily to be used in a Jenkins CI environment to run against Browserstack (or other 3rd party Selenium vendor), 
-however you can still override these things.
+#### Reports
+There are a few ways reports can be built. The default `run` task automatically builds a report.
+This will create the `test_report.html` file in the `output` directory. The `parallel` task (details below) also automatically
+builds the report. You can also run the default run. Reports are generated with the [report_builder gem](https://github.com/rajatthareja/ReportBuilder)
 
+#### Other environment variable options
+* **BROWSER**=*browser name*
 
-#### 6. Parallel Testing
+  `chrome`, `firefox`, `ie`, `edge`, `safari` (provided they are
+  installed and have their corresponding drivers)
 
-There is a rake task to run parallel tests. By default this will launch a cucumber process per feature file per number
+  Default is `chrome`
+
+  NOTE: Development and testing is primarily done on the latest Chrome version. Other browsers and versions may
+  act differently or fail completely. We are open to accepting changes that get others working as long as they don't
+  significantly affect the tests with respect to how they perform in Chrome. More testing with other browsers would be
+  greatly appreciated even.
+
+    * **SITE**=*environment to run against*
+
+      The `SITE` env var corresponds with the target environment you want to run
+      your tests against. This is accomplished by creating a config file for the env at
+      at the very least and if necessary you can create a directory with the same name
+      to further break down the environment into smaller units (apps, sites, etc.). 
+      
+      These are controlled by the yaml files in `features/support/configs`. At the very minimum
+      there needs to be a `global.yml`. This ideally would contain information for any app being 
+      tested. As an example theres files here for a development, production, an qa environment. 
+      Individual app configs belong in the `features/support/configs/<env>`
+      Configs are loaded through the `EnvSettings` class by merging information from
+      `global.yml`, `<env>.yml`, and all the app configs in the specific env folder.
+      These parameters are made available through `EnvSettings.configs`,
+      a `DeepStruct` of the environment config file.
+      Used for describing predefined environment conditions (users,
+      assets, etc.)
+
+        * Example:
+          To get the username and password for the example app in the qa environment 
+          when your `SITE` env var is set to `qa`. 
+          `features/support/config/qa/example.yml` 
+          ```
+          :login:
+            :username: test_user
+            :password: p4$$w0rd
+          ```
+          `EnvSettings.configs.example.login.username`
+          `EnvSettings.configs.example.login.password`
+        This allows you to have another `example.yml` in another environment with the same
+        named config with different values, which allows you to run the same tests in either
+        environment without changing the tests.
+
+* **HEADLESS**=*true*
+
+  Run in headless mode. Currently this is only supported for Chrome.
+
+* **DEBUG**=*true*
+
+  Set Selenium logging to debug mode. Debug notices will be sent to STDOUT
+
+* **STEP**=*true*
+
+  Pause execution after each step, press Enter to continue
+
+#### Remote
+This framework supports 2 remote grids, Zalenium (Selenium 3), and Selenium 4. 
+In order to run against a remote grid you will need to set the `ZAL` or `SE4` env variable to `true`
+and set the `HUB_ADDR` (without the `http://`) and the `HUB_PORT` env variables to point to the desired grid address.
+
+Previously there was a class for Browserstack and I've experimented with Sauce and other vendor grids
+so any of these are easily addable. 
+
+#### Docker
+
+You can build and run these tests in a Docker container. This is also the quickest way to get going.
+
+To build:
+
+`docker build -t <build_name> <path or url to repo>` Build the default container
+
+Another way to run the tests is inside the container with headless Chrome. The image is built with chrome and
+chromedriver installed. Setting the **`HEADLESS`** env variable to `true` will trigger this mode. This is
+not to be used in conjunction with Zalenium testing. Also note that headless Chrome is still relatively new and
+you may run into issues that you might not see running in regular Chrome or another browser.
+
+Example:
+
+`docker run -e HEADLESS=true -e TAGS=@manage_smoke -t <build_name>`
+
+I will attempt to keep the container up to date with the latest chromedriver however it's possible you may want to build
+it with a different version. You can rebuild it and pass a different version number like this:
+
+`docker build --build-arg CD_VERSION=<chromedriver version> -t <build_name> <path or url to repo>`
+
+#### Parallel Testing
+
+There is a rake task to run parallel tests, `rake parallel`. By default this will launch a cucumber process per feature file per number
 of cpus on the system it is running. You can override this by setting **NUM_PROCS** to the desired number of parallel
 processes.
-
-#### 7. Parallel Testing with Docker Compose
-
-There is a docker-compose.yml file which defines a selenium hub and nodes, and the browser tests to run in parallel.
-This is still a bit of a work in progress but there are a few ways this can be called right now, each with varying
-levels of utility. The best way to see things working is:
-
-`$ docker-compose up -d chrome && docker-compose scale chrome=8`
-
-`$ docker-compose up ui_test_framework`
-
-As with regular runs you can override environment variables to set your browser, version, to run on Browserstack, etc.
-
-The next steps with this is to get reporting working.
