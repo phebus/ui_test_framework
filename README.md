@@ -97,7 +97,7 @@ builds the report. You can also run the default run. Reports are generated with 
 
 * **HEADLESS**=*true*
 
-  Run in headless mode. Currently this is only supported for Chrome.
+  Run in headless mode. Supported and tested on Chrome and Firefox.
 
 * **DEBUG**=*true*
 
