@@ -2,8 +2,9 @@
 UI Automation Scripts
 
 This repository is the skeleton for browser automation tests. It is a [Cucumber](https://cucumber.io/) driven, [Selenium Webdriver](http://www.seleniumhq.org/docs/03_webdriver.jsp) based framework
-that utilizes the [PageObject gem](https://github.com/cheezy/page-object) as a DSL for Webdriver abstraction
-and page object pattern enforcer.
+that utilizes the [PageObject](https://github.com/cheezy/page-object) and [Watir](https://github.com/watir/watir)
+gems as DSLs for Webdriver abstraction
+and page object pattern enforcement.
 
 ## Prerequisites:
 
